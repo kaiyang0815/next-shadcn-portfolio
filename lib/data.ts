@@ -53,7 +53,8 @@ function getMDXData(dir: string): Post[] {
 
   return fileList.map((file) => {
     const { metadata, content } = readMDXFile(dir, file);
-    const slug = path.basename(file, path.extname(file));
+    const slug = path.basename(file, path.extname(file)).slice(0, -3);
+    console.log("🚀 ~ returnfileList.map ~ slug:", slug);
 
     return {
       metadata,
@@ -72,5 +73,6 @@ export { getContent, getMDXFileList };
 
 // console.log(
 //   "🚀 ~ getMDXFileList:",
-//   getMDXFileList(path.join("content", "posts", "notes")),
+//   getMDXFileList(path.join("content", "projects")),
 // );
+getMDXFileList(path.join("content", "projects"));

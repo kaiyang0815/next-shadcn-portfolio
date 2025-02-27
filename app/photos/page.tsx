@@ -1,7 +1,3 @@
-export const IMAGE_WIDTH_SMALL = 50;
-export const IMAGE_WIDTH_MEDIUM = 300;
-export const IMAGE_WIDTH_LARGE = 1000;
-
 export default async function PhotosPage() {
   const photos: string[] = [
     "/photos/photo1.jpg",
