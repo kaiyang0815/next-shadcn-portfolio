@@ -1,0 +1,422 @@
+---
+title: Tailwind CSS 核心概念
+draft: false
+publishedAt: 2025-02-20
+description: "关于 Tailwind CSS 的笔记"
+featured: false
+tags:
+  - "Tailwind CSS"
+  - "ZH"
+---
+
+## 工具类
+
+> Tailwind CSS 核心概念：Utility 优先
+
+Tailwind CSS 提倡直接在 HTML 标记中使用单用途的 Utility 来设置样式，通过组合这些类来实现复杂的组件。
+
+### 使用 utility 的优势
+
+#### 开发效率
+
+无需绞尽脑汁为元素命名 CSS 类名，避免在 HTML 和 CSS 文件之间来回切换，从而显著提升开发速度。
+
+#### 安全修改
+
+修改实用类只会影响当前元素，降低了意外破坏其他页面样式的风险。
+
+#### 易于维护
+
+修改样式只需定位到 HTML 元素并修改对应的类名，无需深入理解复杂的 CSS 结构。
+
+#### 代码复用
+
+结构和样式紧密结合，方便复制和粘贴 UI 代码块到不同项目。
+
+#### CSS 体积控制
+
+Utility 的高复用性避免了 CSS 文件随项目增长而无限膨胀。
+
+#### 设计约束
+
+不再随意使用魔数（Magic number），而是从预定义的设计系统里选择样式，保证 UI 的一致性。
+
+#### 状态控制
+
+通过状态变体（variants）可以轻松控制 `:hover`、`:focus` 等状态的样式。
+
+#### 响应式设计
+
+利用响应式变体，可以快速构建适配不同屏幕尺寸的响应式界面。
+
+### Utility 的使用技巧
+
+#### 状态变体
+
+使用 `hover:`, `focus:` 等前缀来设置特定状态下的样式，例如 `hover:bg-sky-700`。
+
+#### 断点变体
+
+使用 `sm:`, `md:` 等前缀来在不同断点应用样式，例如 `sm:grid-cols-3`。
+
+#### 暗黑模式
+
+使用 `dark:` 前缀为暗黑模式设置样式，例如 `dark:bg-gray-800`。
+
+#### 类组合
+
+组合多个类来实现复杂的 CSS 属性效果，例如 `blur-sm grayscale`。
+
+#### 任意值
+
+使用 `[]` 语法来指定不在主题配置中的一次性数值，例如 `bg-[#316ff6]`。
+
+#### 复杂选择器
+
+使用 `group-hover` 来在父元素悬停时修改子元素样式。
+
+使用任意变体 `[&>[data-active]+span]:text-blue-600` 来编写自定义选择器.
+
+### 何时使用行内样式（Inline Styles）
+
+- 当样式值来源于动态数据（如 API 或数据库）时。
+- 处理非常复杂且难以用类名表达的样式值时。
+- 结合 CSS 变量，先用行内样式设置变量，再用实用类引用变量，实现动态样式。
+
+### 应对重复代码
+
+#### 循环渲染
+
+在循环中生成重复元素时，只需编写一次实用类。
+
+#### 多光标编辑
+
+同时编辑多个重复的类名。
+
+#### 组件化
+
+将重复使用的样式封装成组件，例如 React、Vue 组件或模板 partials。
+
+#### 自定义 CSS
+
+对于简单的样式，可以编写自定义 CSS 类，但推荐对复杂组件使用模板 partials。
+
+```html
+<button class="btn-primary">Save changes</button>
+```
+
+```css
+@import "tailwindcss";
+@layer components {
+  .btn-primary {
+    border-radius: calc(infinity * 1px);
+    background-color: var(--color-violet-500);
+    padding-inline: --spacing(5);
+    padding-block: --spacing(2);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-violet-700);
+      }
+    }
+  }
+}
+```
+
+#### 解决样式冲突
+
+避免在同一元素上使用冲突的实用类。
+
+使用 `!important` 修饰符强制应用特定样式。
+
+```html
+<div class="bg-red-500! bg-teal-500">
+  <!-- ... -->
+</div>
+```
+
+使用 `important` 标志将所有 Tailwind 实用类标记为 `!important`。
+
+```css
+@import "tailwindcss" important;
+```
+
+使用 `prefix` 选项为 Tailwind 类添加前缀，避免与现有 CSS 类名冲突。
+
+```css
+@import "tailwindcss" prefix(tw);
+```
+
+## 状态
+
+### 有条件地应用工具类
+
+Tailwind CSS 中的每个工具类都可以通过添加一个变体来有条件地应用，该变体描述了要定位的条件。 例如，要在悬停时应用 `bg-sky-700` 类，可以使用 `hover:bg-sky-700` 类。
+
+### 传统 CSS 的比较
+
+- 传统 CSS 中，单个类名会根据当前状态执行不同的操作。
+- Tailwind CSS 中，不会将悬停状态的样式添加到现有类，而是向元素添加另一个仅在悬停时执行某些操作的类。
+
+### 伪类
+
+在 Tailwind CSS 中，每个实用程序类都可以通过在类名开头添加一个变体来有条件地应用。 此变体描述了您要定位的条件。
+
+伪类允许您根据某些状态或条件来设置元素的样式，例如当元素被悬停、聚焦或者是一个列表中的第一个或最后一个子元素时。
+
+#### 常见的伪类变体
+
+- `hover`：当用户使用鼠标光标悬停在元素上时，设置元素的样式。 例如，`hover:bg-black` 会在悬停时将背景颜色更改为黑色。
+- `focus`：当元素获得焦点时，设置元素的样式。 例如，`focus:border-blue-400` 会在元素获得焦点时将边框颜色更改为蓝色。
+- `focus-within`：当元素或其后代之一获得焦点时，设置元素的样式。
+- `focus-visible`：当元素通过键盘获得焦点时，设置元素的样式。
+- `active`：当元素被按下时，设置元素的样式。 例如，`active:bg-blue-600` 会在元素处于活动状态（被按下）时更改背景颜色。
+- `visited`：当链接已被访问时，设置链接的样式。
+- `target`：如果元素的 ID 与当前 URL 片段匹配，则设置元素的样式。
+- `first-child`：如果元素是第一个子元素，则设置元素的样式。 `first` 变体用于此目的。
+- `last-child`：如果元素是最后一个子元素，则设置元素的样式。 `last` 变体用于此目的。
+- `only-child`：如果元素是唯一的子元素，则设置元素的样式。
+- `nth-child(odd)`：如果元素是奇数编号的子元素，则设置元素的样式。 使用 `odd` 变体。
+- `nth-child(even)`：如果元素是偶数编号的子元素，则设置元素的样式。 使用 `even` 变体。
+- `first-of-type`：如果元素是其类型的第一个子元素，则设置元素的样式。
+- `last-of-type`：如果元素是其类型的最后一个子元素，则设置元素的样式。
+- `only-of-type`：如果元素是其类型的唯一子元素，则设置元素的样式。
+- `nth-child()`：设置特定位置元素的样式。 使用 `nth` 变体。
+- `nth-last-child()`：设置从末尾开始的特定位置的元素的样式。 使用 `nth-last` 变体。
+- `nth-of-type()`：设置相同类型的特定位置元素的样式。 使用 `nth-of-type` 变体。
+- `nth-last-of-type()`：设置从末尾开始的相同类型的特定位置的元素的样式。 使用 `nth-last-of-type` 变体。
+- `empty`：如果元素没有内容，则设置元素的样式。
+- `disabled`：当输入被禁用时，设置输入的样式。
+- `enabled`：当输入被启用时，设置输入的样式。
+- `checked`：当复选框或单选按钮被选中时，设置其样式。
+- `indeterminate`：设置处于不确定状态的复选框或单选按钮的样式。
+- `default`：设置页面初始加载时为默认值的选项、复选框或单选按钮的样式。
+- `optional`：当输入为可选项时，设置输入的样式。
+- `required`：当输入为必填项时，设置输入的样式。
+- `valid`：当输入有效时，设置输入的样式。
+- `invalid`：当输入无效时，设置输入的样式。
+- `in-range`：当输入的值在指定的范围限制内时，设置输入的样式。
+- `out-of-range`：当输入的值超出指定的范围限制时，设置输入的样式。
+- `placeholder-shown`：当显示占位符时，设置输入的样式。
+- `autofill`：当输入被浏览器自动填充时，设置输入的样式。
+- `read-only`：当输入为只读时，设置输入的样式。
+
+#### :has() 伪类
+
+`has-*` 变体根据其后代的状态或内容来设置元素的样式.
+
+- **根据组的后代设置样式**：在父元素上使用 `group` 类，并使用 `group-has-*` 变体，以根据该父元素的后代来设置目标元素的样式。
+- **根据同级的后代设置样式**：在同级元素上使用 `peer` 类，并使用 `peer-has-*` 变体，以根据同级元素的后代来设置目标元素的样式。
+
+#### :not() 伪类
+
+当条件不为真时，使用 `not-` 变体来设置元素的样式。 例如，将 `not-focus:` 与 `hover:` 结合使用，以仅在元素未获得焦点时应用悬停样式.
+
+- **基于父状态设置样式**：使用 `group` 类标记父元素，并使用 `group-*` 变体（如 `group-hover`）来根据该父元素的状态设置元素的样式.
+- **基于同级状态设置样式**：使用 `peer` 类标记同级元素，并使用 `peer-*` 变体（如 `peer-invalid`）来根据同级元素的状态设置元素的样式.
+
+### 伪元素
+
+伪元素用于设置**元素特定部分**的样式，而不是整个元素。 伪元素允许你对文档中**不存在**的元素创建样式，例如，可以使用 `::before` 在元素内容之前插入内容.
+
+#### 常见的伪元素变体
+
+- `::before`：使用 `before` 变体来设置 **::before** 伪元素的样式。Tailwind 会自动添加 `content: ''`，除非你指定了不同的值. 例如，你可以在元素的内容之前添加星号，`after:content-['*']`.
+
+- `::after`：使用 `after` 变体来设置 **::after** 伪元素的样式。 与 `::before` 类似，Tailwind 会自动添加 `content: ''`.
+
+- `::placeholder`：使用 `placeholder` 变体来设置任何 input 或 textarea 的占位符文本的样式. 例如，`placeholder:text-gray-500`.
+
+- `::file`：使用 `file` 变体来设置文件输入按钮的样式. 比如修改背景颜色，文字颜色等.
+
+- `::marker`：使用 `marker` 变体来设置列表中的计数器或项目符号的样式. `marker` 变体是可继承的，因此可以在父元素上使用以避免重复.
+
+- `::selection`：使用 `selection` 变体来设置**选中文本**的样式. `selection` 变体也是可继承的，可以添加到树中的任何位置，并将应用于所有后代元素.
+
+- `::first-line`：使用 `first-line` 变体来设置**块内容中第一行**的样式.
+
+- `::first-letter`：使用 `first-letter` 变体来设置**块内容中首字母**的样式.
+
+- `::backdrop`：使用 `backdrop` 变体来设置原生 `<dialog>` 元素的背景幕帘的样式.
+
+#### 伪元素和实际 HTML 元素的区别
+
+- 在 Tailwind 项目中，对于大多数情况，使用**实际的 HTML 元素**通常比使用 `::before` 和 `::after` 伪元素**更简单**.
+- 应**保留 `before` 和 `after`** 用于以下情况：伪元素的内容**实际上不在 DOM 中**，并且**不能被用户选择**.
+
+### 媒体查询和特性查询
+
+**媒体查询**允许您根据**设备的特征**（如屏幕尺寸、颜色方案、方向等）**有条件地应用样式**.
+**特性查询**允许您根据**浏览器对特定 CSS 特性的支持情况**来**有条件地应用样式**.
+
+#### 常见的媒体查询变体
+
+- **响应式断点 (Responsive Breakpoints)**：
+  - 使用 `sm`, `md`, `lg`, `xl`, `2xl` 等变体来**针对不同的屏幕尺寸**设置样式. 例如，`md:grid-cols-4` 表示在中等尺寸屏幕上使用 4 列的栅格布局。
+  - 使用 `@md`, `@lg` 等变体来**基于父元素的宽度**设置样式，而不是视口宽度. 需要添加 `@container` 类到父元素.
+- **`prefers-color-scheme`**：
+  - 使用 `dark` 变体来**针对暗黑模式**设置样式. 例如，`dark:bg-gray-900` 表示在暗黑模式下背景颜色为灰色 900。
+- **`prefers-reduced-motion`**：
+  - 使用 `motion-reduce` 变体来**在用户请求减少动画时**有条件地添加样式.
+  - 使用 `motion-safe` 变体来**在用户没有请求减少动画时**有条件地添加样式.
+- **`prefers-contrast`**：
+  - 使用 `contrast-more` 变体来**在用户请求更高对比度时**有条件地添加样式.
+  - 使用 `contrast-less` 变体来**在用户请求更低对比度时**有 36 条件地添加样式.
+- **`forced-colors`**：
+  - 使用 `forced-colors` 变体来**在用户启用了强制颜色模式时**有条件地添加样式.
+  - 使用 `not-forced-colors` 变体来**在用户没有使用强制颜色模式时**应用样式.
+- **`orientation`**：
+  - 使用 `portrait` 和 `landscape` 变体来**在视口处于特定方向时**有条件地添加样式.
+- **`print`**：
+  - 使用 `print` 变体来**只在打印文档时**应用样式.
+
+#### 特性查询 (`@supports`)
+
+- 使用 `supports-[...]` 变体来**基于浏览器是否支持某个 CSS 特性**来设置样式. 例如, `supports-[display:grid]:grid` 只有在浏览器支持 `display: grid` 属性时才会应用 `grid` 类.
+- 可以使用 `not-supports-[...]` 变体来**在浏览器不支持某个 CSS 特性时**设置样式.
+- 可以**通过创建新的变体**来配置常用 `@supports` 规则的快捷方式.
+
+- **`@starting-style`**
+  - 使用 `starting` 变体来设置元素在**首次渲染到 DOM 中**时的外观，或者从 `display: none` 转换为可见时的外观.
+
+### 属性选择器
+
+属性选择器允许您**基于 HTML 元素的属性**来设置元素的样式。 这包括 `ARIA` 属性、`data-` 属性以及其他自定义属性.
+
+#### 常见的属性选择器变体
+
+- **`ARIA` 状态 (ARIA States)**：
+  - 使用 `aria-*` 变体来**基于 `ARIA` 属性**有条件地设置样式. 例如，`aria-checked:bg-sky-700` 会在 `aria-checked` 属性设置为 `true` 时应用 `bg-sky-700` 类.
+  - Tailwind 默认包含**最常见的布尔 `ARIA` 属性的变体**，例如 `aria-busy`, `aria-checked`, `aria-disabled`, `aria-expanded`, `aria-hidden`, `aria-pressed`, `aria-readonly`, `aria-required` 和 `aria-selected`.
+  - 您可以通过**创建新的变体**来自定义可用的 `aria-*` 变体.
+  - 对于不适合包含在项目中的一次性 `ARIA` 变体，或者**对于采用特定值的更复杂的 `ARIA` 属性**，可以使用**方括号**来动态生成属性.
+  - `ARIA` 状态变体还可以使用 `group-aria-*` 和 `peer-aria-*` 变体来**定位父元素和同级元素**.
+- **`Data` 属性 (Data Attributes)**：
+  - 使用 `data-*` 变体来**基于 `data` 属性**有条件地应用样式.
+  - 要**检查 `data` 属性是否存在**（而不是特定值），只需指定属性名称即可.
+  - 如果需要**检查特定值**，可以使用**任意值**.
+  - 或者，可以通过**在 `data-*` 命名空间中创建一个新变体**来配置项目中使用的常见 `data` 属性的快捷方式.
+- **`RTL` 支持 (RTL Support)**：
+  - 使用 `rtl` 和 `ltr` 变体来**分别在从右到左和从左到右模式下**有条件地添加样式，以构建多方向布局.
+  - 如果构建的网站需要同时支持从左到右和从右到左的布局，这些变体才有用。 如果构建的网站只需要支持一个方向，则不需要这些变体，只需应用对内容有意义的样式即可.
+- **打开/关闭状态 (Open/Closed State)**：
+  - 使用 `open` 变体来**在 `<details>` 或 `<dialog>` 元素处于打开状态时**有条件地添加样式.
+  - 此变体还**针对 popovers 的 `:popover-open` 伪类**.
+- **样式化 `inert` 元素 (Styling Inert Elements)**
+  - `inert` 变体允许您**样式化用 `inert` 属性标记的元素**.
+  - 这对于**添加视觉提示**以清楚地表明某些内容部分不可交互很有用.
+
+### 子选择器
+
+子选择器允许您选择特定元素的**子元素**并设置其样式.
+
+#### 常见的子选择器变体
+
+##### 样式化直接子元素 (Styling Direct Children)\*\*
+
+- 使用 `*` 变体来选择**元素的直接子元素**.
+- 虽然通常**最好将实用程序类直接放在子元素上**，但在需要样式化您**无法控制的直接子元素**的情况下，可以使用 `*` 变体.
+- **由于生成的子选择器的特殊性，直接在子元素上使用实用程序覆盖样式将不起作用**.
+- 例如，如果您想要设置一个 `ul` 元素下所有直接 `li` 子元素的样式，您可以使用 `ul class="*:rounded-full ..."`。这将使所有 `li` 元素具有圆角.
+
+##### 样式化所有后代元素 (Styling All Descendants)
+
+- 类似于 `*`，`**` 变体可用于**样式化元素的子元素**.
+- 主要的区别在于 `**` 将样式应用于**所有后代**，而不仅仅是直接子元素.
+- 当您**将其与其他变体结合使用以缩小选择范围**时，这尤其有用.
+- 例如，`**:data-avatar:rounded-full` 会选择所有具有 `data-avatar` 属性的后代元素，并使它们具有圆角.
+
+### 任意变体
+
+自定义变体允许您编写自定义选择器变体，直接在 HTML 中使用。
+如果您在项目中**多次使用相同的任意变体**，那么**创建自定义变体**可能是有价值的.
+
+#### 使用任意变体 (Using Arbitrary Variants)
+
+**任意变体**只是表示选择器的**格式字符串**，用**方括号**括起来.
+
+例如，以下任意变体在元素具有 `is-dragging` 类时将光标更改为 `grabbing`:
+
+```html
+<li class="[&.is-dragging]:cursor-grabbing">{item}</li>
+```
+
+**任意变体可以与内置变体或彼此堆叠**，就像 Tailwind 中的其他变体一样.
+
+```html
+<li class="[&.is-dragging]:active:cursor-grabbing">{item}</li>
+```
+
+如果您的选择器中**需要空格**，您可以使用**下划线**. 例如，以下任意变体选择您已添加类的元素中的所有 `p` 元素:
+
+```html
+<div class="[&_p]:mt-4">
+  <p>Lorem ipsum...</p>
+  <ul>
+    <li>
+      <p>Lorem ipsum...</p>
+    </li>
+    <!-- ... -->
+  </ul>
+</div>
+```
+
+您还可以在任意变体中使用 **at-rules**，例如 `@media` 或 `@supports`
+
+```html
+<div class="flex [@supports(display:grid)]:grid">
+  <!-- ... -->
+</div>
+```
+
+使用 at-rule 自定义变体时，不需要 `&` 占位符，就像使用预处理器进行嵌套时一样.
+
+#### 注册自定义变体 (Registering a Custom Variant)
+
+如果您发现自己在项目中多次使用相同的任意变体，那么创建一个自定义变体可能是有价值的:
+
+```css
+@custom-variant pointer-coarse {
+  @media (pointer: coarse) {
+    @slot;
+  }
+}
+```
+
+现在您可以在 HTML 中使用 `pointer-coarse:<utility>` 变体:
+
+```html
+<button class="pointer-coarse:size-12 ..."></button>
+```
+
+当不需要嵌套时，您可以使用简写语法创建变体:
+
+```css
+@custom-variant pointer-coarse (@media (pointer: coarse));
+```
+
+当自定义变体有多个规则时，可以将它们相互嵌套:
+
+```css
+@custom-variant any-hover {
+  @media (any-hover: hover) {
+    & :hover {
+      @slot;
+    }
+  }
+}
+```
+
+## 响应式
+
+## 暗黑
+
+## 主题变量
+
+## 颜色系统
+
+## 自定义样式
+
+## 函数和指令
