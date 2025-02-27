@@ -19,7 +19,7 @@ export function MainNav() {
             width={"16"}
             height={"16"}
             alt="logo"
-            className="mr-2 rounded-sm"
+            className="dark:outline-ston mr-2 rounded-sm outline outline-1 outline-stone-200 dark:outline-stone-800"
           />
           {SiteConfig.siteName}
         </span>
@@ -33,7 +33,7 @@ export function MainNav() {
               "flex items-center justify-center transition-colors hover:text-stone-700 dark:hover:text-stone-100",
               pathname?.startsWith(link.href)
                 ? "text-stone-900 dark:text-stone-200"
-                : "text-stone-600 dark:text-stone-400"
+                : "text-stone-600 dark:text-stone-400",
             )}
           >
             {link.icon && link.icon}
