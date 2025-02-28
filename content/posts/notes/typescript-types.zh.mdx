@@ -1,0 +1,93 @@
+---
+title: Typescript 中的类型
+createdAt: 2025-02-28T02:01:18.495Z
+draft: true
+description: 简单介绍 Typescript 中类型及其应用
+featured: false
+tags:
+  - Typescript
+---
+
+## 介绍
+
+Typescript 中具有基本类型
+
+## boolean
+
+Typescript 中 boolean 具有两个值，分别是 true 和 false。
+
+## number
+
+Typescript 使用 number 类型来表示数值类型，Javascript 中没有所谓的 int 和 float，因此只使用 number 来表示。
+
+## string
+
+## enum
+
+### 
+
+## void
+
+在 Typescript 中，函数未显式返回值时，其返回值类型将会自动推断为 void，与 Javascript 自动返回 undefined 不同，这是因为在 Typescript 中，void 和 undefined 是不同的。
+
+## Array
+
+在 Typescript 中使用语法`dataType[]`  来创建一个存储 type 类型数据的 Array，或者利用`Array<dataType>`。
+
+## undefined
+
+Typescript 中具有两个基本类型用于表示“空”相关的语义，分别是 null 和 undefined，其中 undefined 在变量初始化时出现。
+
+## Tuple
+
+在 Typescript 中，Tuple 是 Array 的拓展，一个 Tuple 类型变量能够知道自身的长度及指定位置变量的类型，在 runtime 中，Tuple 没有意义，因为 Javascript 并没有提供相应的类型，因此 Typescript 中的 Tuple 类型在转换成 Javascript 代码时本质上仍旧是一个 Array。
+
+## unknown
+
+作为 any 类型的类型安全版本，在 3.0 以后引入了 unknown 类型，unknown 类型可以接受其他所有类型的变量赋值，但不能赋给自身以外的其他类型。
+
+## any
+
+Typescript 中的特殊类型，正如其名，any 用于表示变量的类型是“任意的”，any 类型变量可以调用任意一个函数或访问任意一个属性，在声明变量时，若不显式指定变量类型，则默认为 any。
+
+## never
+
+never 类型表示一种不存在的状态类型，对于返回异常或永远不返回值的函数（死循环）来说，其返回值就是 never。
+
+never 是所有类型的子类型，并且能够被赋给任何类型，但除了自身外，不接受其他类型的赋值，哪怕是 any 类型。
+
+## 类型断言 (Type Assertion)
+
+`as` 操作符在 Typescript 中用于类型断言，通过使用类型断言，在 TS 静态类型检测层面（同样的，类型断言在 runtime 中不会产生副作用，变量类型实际上并没有进行更改）进行了明确的类型指定，解决了在某些变量无法进行自动类型推断是出现的错误。
+
+类型断言可以使用 generic 中的语法实现，即`something as string`等效于`<string>something`
+
+### 非空断言
+
+使用`!`将变量断言为非空类型，可以避免非必要的类型检测，但使用时需确保该变量确实是 non-null 的，否则可能会导致 runtime 错误，需小心。
+
+### as any
+
+将变量类型断言为 any 类型。
+
+### as const
+
+const 断言将 literal values 声明为类型。
+
+使用 const assertion 后，数组的类型将变为 readonly 的 Tuple，object 的属性变成 readonly，文本字面量的类型会自动拓展为 string
+
+```ts
+const hello = "HH" as const
+console.log(typeof hello)
+// [LOG]: "string" 
+
+// Type 'readonly [10, 20]'
+let y = [10, 20] as const;
+// Type '{ readonly text: "hello" }'
+let z = { text: "hello" } as const;
+```
+
+## satisfies
+
+用于处理需要确保变量类型正确又不更改自身类型的情景，使用 `satisfies` 来判断变量是否满足指定类型的定义，而变量自身的类型不会更改。
+

@@ -1,0 +1,69 @@
+---
+title: Combining Types
+createdAt: 2025-02-28T08:54:05.258Z
+draft: true
+description: Combining Types in typescript.
+featured: false
+tags:
+  - roadmap
+---
+
+## Union
+
+在 ts 中，使用 `|` 来定义联合类型。
+
+在作为参数类型使用时，只需传递满足联合类型中任意一种类型的变量即可。
+
+但若是对其进行操作，则需要执行类型 narrowing。
+
+```ts
+function printId(id: number | string) {
+  if (typeof id == "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log("input_is_Number")
+  }
+}
+
+printId(23)
+```
+
+## Intersection
+
+ts 中的 Intersection 和集合理论中的 Intersection 定义有所不同，ts 中的 Intersection 将多个类型进行结合，新的类型拥有所有类型都有的特性。
+
+```ts
+interface A {
+  a: string;
+}
+
+interface B {
+  b: number;
+}
+
+type AB = A & B;
+let value: AB = { a: 'hello', b: 42 };
+```
+
+### Type alias
+
+通过 type 为任意类型定义名称。
+
+```ts
+type ID = string | number
+```
+
+## keyof 操作符
+
+keyof 返回 object 中所有键字面量组成的联合类型。
+
+```ts
+type TAccount = {
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+};
+
+type TAccountKeys = keyof TAccount; // Equivalent to: "username" | "email" | "password" | "role"
+```
