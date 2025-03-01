@@ -21,6 +21,13 @@ async function selectPostCategory() {
       { value: "tutorials", label: "Tutorial" },
     ],
   });
+  const psotLang = await select({
+    message: "Language:",
+    options: [
+      { value: "zh", label: "Chinese" },
+      { value: "en", label: "English" },
+    ],
+  });
   const postSlug = await text({
     message: "Slug:",
     placeholder: "example",
@@ -59,7 +66,7 @@ async function selectPostCategory() {
     "content",
     "posts",
     postCategory as string,
-    `${postSlug as string}.mdx`,
+    `${postSlug as string}.${psotLang as string}.mdx`,
   );
 
   if (isCancel(postCategory)) {
