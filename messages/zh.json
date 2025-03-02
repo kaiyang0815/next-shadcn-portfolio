@@ -1,0 +1,16 @@
+{
+  "SiteConfig": {
+    "siteName": "凯阳",
+    "siteUrl": "https://kaiyang.xyz",
+    "siteDomain": "kaiyang.xyz",
+    "siteDescription": "前端开发者，同时也是全栈开发者、UI/UX设计师和摄影师。",
+    "siteKeywords": "Next.js, ShadcnUI, Blog, Frontend, Developer, Designer, Photographer",
+    "siteAuthor": "凯阳",
+    "siteGithubURL": "https://github.com/kaiyang0815/next-shadcn-portfolio"
+  },
+  "NavLinks": {
+    "blog": "博客",
+    "projects": "项目",
+    "photos": "照片"
+  }
+}

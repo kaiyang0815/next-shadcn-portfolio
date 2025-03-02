@@ -32,17 +32,17 @@ type NavLink = {
 
 const NavLinks: NavLink[] = [
   {
-    name: "Blog",
+    name: "blog",
     href: "/blog",
     icon: <Newspaper size={"14"} className="mr-2" />,
   },
   {
-    name: "Projects",
+    name: "projects",
     href: "/projects",
     icon: <Sparkles size={"14"} className="mr-2" />,
   },
   {
-    name: "Photos",
+    name: "photos",
     href: "/photos",
     icon: <Aperture size={"14"} className="mr-2" />,
   },

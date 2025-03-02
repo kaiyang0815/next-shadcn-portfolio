@@ -4,7 +4,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
-import { NavLinks } from "@/app/config";
+import { NavLinks } from "@/app/[locale]/config";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

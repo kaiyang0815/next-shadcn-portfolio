@@ -1,12 +1,12 @@
-import { SiteConfig } from "@/app/config";
+import { SiteConfig } from "@/app/[locale]/config";
 import { CommandMenu } from "@/components/command-menu";
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { ModeSwitcher } from "@/components/mode-switcher";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import { getContent } from "@/lib/data";
 import { Github } from "lucide-react";
-import Link from "next/link";
 
 export function SiteHeader() {
   const posts = getContent(["content", "posts", "notes"]).filter(

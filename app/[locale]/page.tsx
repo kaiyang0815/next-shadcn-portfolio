@@ -1,4 +1,4 @@
-import { SiteConfig } from "@/app/config";
+import { SiteConfig } from "@/app/[locale]/config";
 import {
   FarmerIcon,
   NextJSIcon,
@@ -15,22 +15,20 @@ import {
 import PostList from "@/components/post-list";
 import { Button } from "@/components/ui/button";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { Link } from "@/i18n/navigation";
 import { getContent } from "@/lib/data";
-import Link from "next/link";
-
+import { useTranslations } from "next-intl";
 export default function Home() {
   const posts = getContent(["content", "posts", "notes"]);
-
+  const t = useTranslations("SiteConfig");
   return (
     <>
       <PageHeader>
         <PageHeaderHeading>
-          <span>{SiteConfig.siteAuthor}</span>
+          <span>{t("siteAuthor")}</span>
           <span>{SiteConfig.siteDomain}</span>
         </PageHeaderHeading>
-        <PageHeaderDescription>
-          {SiteConfig.siteDescription}
-        </PageHeaderDescription>
+        <PageHeaderDescription>{t("siteDescription")}</PageHeaderDescription>
         <PageActions>
           <Button asChild size="sm">
             <Link href="/about">About</Link>

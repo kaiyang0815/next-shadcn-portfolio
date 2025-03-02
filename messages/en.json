@@ -1,0 +1,16 @@
+{
+  "SiteConfig": {
+    "siteName": "Mizar",
+    "siteUrl": "https://kaiyang.xyz",
+    "siteDomain": "kaiyang.xyz",
+    "siteDescription": "A Frontend Developer, which is a Full Stack Developer, who is also a UI/UX Designer, and a Photographer.",
+    "siteKeywords": "Next.js, ShadcnUI, Blog, Frontend, Developer, Designer, Photographer",
+    "siteAuthor": "Mizar WANG",
+    "siteGithubURL": "https://github.com/kaiyang0815/next-shadcn-portfolio"
+  },
+  "NavLinks": {
+    "blog": "Blog",
+    "projects": "Projects",
+    "photos": "Photos"
+  }
+}

@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { NavLinks, SiteConfig } from "@/app/config";
+import { NavLinks, SiteConfig } from "@/app/[locale]/config";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export function MainNav() {
   const pathname = usePathname();
-
+  const t = useTranslations("NavLinks");
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-4 flex items-center gap-2 lg:mr-6">
@@ -37,7 +38,7 @@ export function MainNav() {
             )}
           >
             {link.icon && link.icon}
-            {link.name}
+            {t(link.name)}
           </Link>
         ))}
       </nav>
